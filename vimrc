@@ -108,6 +108,9 @@ set cmdheight=1
 " 在状态栏显示光标的当前位置（位于哪一行哪一列）
 " set ruler
 
+" 显示不可见字符
+" set list
+
 " 设置在状态行显示的信息
 set foldcolumn=0
 set foldmethod=indent 
@@ -195,7 +198,6 @@ set autoread
 
 " 如果行尾有多余的空格（包括 Tab 键），该配置将让这些空格显示成可见的小方块
 " set listchars=tab:»■,trail:■
-set list
 
 " 自动补全
 inoremap ( ()<Esc>i
