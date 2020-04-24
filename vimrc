@@ -263,10 +263,10 @@ map Y yhw/<C-r>0<CR>
 noremap "" :reg<CR>
 
 " 保存
-map S :w<CR>
+map S :w!<CR>
 
 " 退出
-map Q :q<CR>
+map Q :q!<CR>
 
 " 读取配置
 map R :source $MYVIMRC<CR>
@@ -306,15 +306,12 @@ map <right> :vertical resize +5<CR>
 " 插件设置
 " ========
 
-call plug#begin('~/.vim/plugged')
+"curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+"   https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+
+"call plug#begin('~/.vim/plugged')
 
 " 状态栏
-Plug 'vim-airline/vim-airline'
+"Plug 'vim-airline/vim-airline'
 
-Plug 'connorholyday/vim-snazzy'
-
-call plug#end()
-
-let g:SnazzyTransparent = 1
-
-color snazzy
+"call plug#end()
