@@ -155,15 +155,14 @@ set smartcase
 " ========
 
 " 打开英语单词的拼写检查
-" set spell spelllang=en_us
+"set spell spelllang=en_us
 
 " 不创建备份文件。默认情况下，文件保存时，会额外创建一个备份文件
 " 它的文件名是在原文件名的末尾，再添加一个波浪号（〜）
-" set nobackup
+set nobackup
 
 " 不创建交换文件。交换文件主要用于系统崩溃时恢复文件，文件名的开头是.、结尾是.swp
 " set noswapfile
-
 
 " 保留撤销历史
 "
@@ -176,19 +175,19 @@ set undofile
 
 " 设置备份文件、交换文件、操作历史文件的保存位置
 " 结尾的//表示生成的文件名带有绝对路径，路径中用%替换目录分隔符，这样可以防止文件重名
-set backupdir=~/.vim/.backup//
-set directory=~/.vim/.swp//
-set undodir=~/.vim/.undo//
+"set backupdir=~/.vim/.backup//
+"set directory=~/.vim/.swp//
+"set undodir=~/.vim/.undo//
 
 " 自动切换工作目录。这主要用在一个 Vim 会话之中打开多个文件的情况，默认的工作目录是打开的第一个文件的目录。
 " 该配置可以将工作目录自动切换到，正在编辑的文件的目录
-set autochdi
+"set autochdi
 
 " 出错时，不要发出响声
 set noerrorbells
 
 " 出错时，发出视觉提示，通常是屏幕闪烁
-" set visualbell
+set visualbell
 
 " Vim 需要记住多少次历史操作
 set history=1000
@@ -308,12 +307,50 @@ map <right> :vertical resize +5<CR>
 " 插件设置
 " ========
 
-"curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
-"   https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-
-"call plug#begin('~/.vim/plugged')
+call plug#begin('~/.vim/plugged')
 
 " 状态栏
-"Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline'
 
-"call plug#end()
+" 文件树
+Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
+
+" 缩进线
+Plug 'Yggdroot/indentLine'
+
+" 简约风
+Plug 'junegunn/goyo.vim'
+
+" 代码补全
+Plug 'Valloric/YouCompleteMe'
+
+call plug#end()
+
+
+" ========
+" 插件配置
+" ========
+
+" NERDTree
+map ff :NERDTreeToggle<CR>
+
+let NERDTreeMapOpenExpl = ""
+let NERDTreeMapUpdir = ""
+let NERDTreeMapUpdirKeepOpen = "l"
+let NERDTreeMapOpenSplit = ""
+let NERDTreeOpenVSplit = ""
+let NERDTreeMapActivateNode = "i"
+let NERDTreeMapOpenInTab = "o"
+let NERDTreeMapPreview = ""
+let NERDTreeMapCloseDir = "n"
+let NERDTreeMapChangeRoot = "y"
+
+" You Complete ME
+nnoremap gd :YcmCompleter GoToDefinitionElseDeclaration<CR>
+nnoremap g/ :YcmCompleter GetDoc<CR>
+nnoremap gt :YcmCompleter GetType<CR>
+nnoremap gr :YcmCompleter GoToReferences<CR>
+
+" Goyo
+map <LEADER>gy :Goyo<CR>
+
