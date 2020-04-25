@@ -205,7 +205,6 @@ inoremap { {<CR>}<Esc>i<tab><CR><Esc>kA
 inoremap ' ''<Esc>i
 inoremap " ""<Esc>i
 
-
 " ========
 " 键位设置
 " ========
@@ -241,7 +240,7 @@ noremap H I
 
 " 退出插入模式
 inoremap <C-h> <Esc>
-
+inoremap jj <Esc>
 " 历史记录前进U 后退u
 noremap U <C-r>
 
@@ -259,7 +258,7 @@ map <C-z> <nop>
 
 " 搜索当前单词
 map Y yhw/<C-r>0<CR>
-                                                     
+
 " 查看寄存器
 noremap "" :reg<CR>
 
@@ -321,8 +320,9 @@ Plug 'Yggdroot/indentLine'
 " 简约风
 Plug 'junegunn/goyo.vim'
 
+
 " 代码补全
-Plug 'Valloric/YouCompleteMe'
+"Plug 'Valloric/YouCompleteMe'
 
 call plug#end()
 
@@ -333,17 +333,18 @@ call plug#end()
 
 " NERDTree
 map ff :NERDTreeToggle<CR>
-
+let NERDTreeShowLineNumber=1
+let NERDTreeShowHidden=1
 let NERDTreeMapOpenExpl = ""
-let NERDTreeMapUpdir = ""
-let NERDTreeMapUpdirKeepOpen = "l"
-let NERDTreeMapOpenSplit = ""
+let NERDTreeMapUpdir = "J"
+let NERDTreeMapUpdirKeepOpen = "j"
+let NERDTreeMapOpenSplit = "s"
 let NERDTreeOpenVSplit = ""
-let NERDTreeMapActivateNode = "i"
-let NERDTreeMapOpenInTab = "o"
-let NERDTreeMapPreview = ""
-let NERDTreeMapCloseDir = "n"
-let NERDTreeMapChangeRoot = "y"
+let NERDTreeMapActivateNode = "o"
+let NERDTreeMapOpenInTab = "t"
+let NERDTreeMapPreview = "T"
+let NERDTreeMapCloseDir = "q"
+let NERDTreeMapChangeRoot = "l"
 
 " You Complete ME
 nnoremap gd :YcmCompleter GoToDefinitionElseDeclaration<CR>
