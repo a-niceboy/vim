@@ -254,7 +254,6 @@ nnoremap cO O<Esc>
 
 " 失效
 map s <nop>
-map <C-z> <nop> 
 
 " 搜索当前单词
 map Y yhw/<C-r>0<CR>
@@ -262,8 +261,10 @@ map Y yhw/<C-r>0<CR>
 " 查看寄存器
 noremap "" :reg<CR>
 
+noremap M :delmarks 
 " 保存
 map S :w!<CR>
+map W :w!<CR>
 
 " 退出
 map Q :q!<CR>
@@ -322,7 +323,7 @@ Plug 'junegunn/goyo.vim'
 
 
 " 代码补全
-"Plug 'Valloric/YouCompleteMe'
+Plug 'Valloric/YouCompleteMe'
 
 call plug#end()
 
