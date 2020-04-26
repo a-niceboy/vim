@@ -261,7 +261,9 @@ map Y yhw/<C-r>0<CR>
 " 查看寄存器
 noremap "" :reg<CR>
 
+" 删除标记
 noremap M :delmarks 
+
 " 保存
 map S :w!<CR>
 map W :w!<CR>
