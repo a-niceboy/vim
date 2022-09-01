@@ -10,6 +10,7 @@
 
 " 打开语法高亮。自动识别代码，使用多种颜色显示
 syntax on
+"syntax enable
 
 " 显示命令" 使用vim键盘模式
 set nocompatible
@@ -22,22 +23,6 @@ set t_Co=256
 
 " 配色不对
 let &t_ut=''
-
-" 开启文件类型检查，并且载入与该类型对应的缩进规则
-" 比如，如果编辑的是.py文件，Vim 就是会找 Python 的缩进规则~/.vim/indent/python.vim
-filetype on
-filetype indent on
-filetype plugin on
-filetype plugin indent on
-
-" 使用vim键盘模式
-set nocompatible
-
-" 文件检测
-filetype on
-filetype indent on
-filetype plugin on
-filetype plugin indent on
 
 " 使用鼠标
 "set mouse=a
@@ -107,6 +92,7 @@ set scrolloff=5
 " 是否显示状态栏。0 表示不显示，1 表示只在多窗口时显示，2 表示显示
 set laststatus=2
 set statusline=%F%m%r%h%w\ [POS=%l,%v][%p%%]\ %{strftime(\"%d/%m/%y\ -\ %H:%M\")}
+"set statusline=\ %F%m%r%h%w\ \ \ \ ASCII=\%03.3b\ \ \ \ HEX=\%02.2B\ \ \ \ POS=%04l,%04v\ \ \ \ %p%%\ \ \ \ NumOfLine=%L
 
 " 命令行（在状态行下）的高度，默认为1
 set cmdheight=1
@@ -159,6 +145,11 @@ set smartcase
 " =============================================
 "               编辑设置
 " =============================================
+set encoding=utf-8
+
+" 命令模式下，底部操作指令按下 Tab 键自动补全。第一次按下 Tab，会显示所有匹配的操作指令的清单；第二次按下 Tab，会依次选择各个指令
+set wildmenu
+set wildmode=longest:list,full
 
 " 打开英语单词的拼写检查
 "set spell spelllang=en_us
@@ -168,7 +159,7 @@ set smartcase
 set nobackup
 
 " 不创建交换文件。交换文件主要用于系统崩溃时恢复文件，文件名的开头是.、结尾是.swp
-" set noswapfile
+set noswapfile
 
 " 保留撤销历史
 "
@@ -184,6 +175,7 @@ set undofile
 "set backupdir=~/.vim/.backup//
 "set directory=~/.vim/.swp//
 "set undodir=~/.vim/.undo//
+set undodir=$VIM\.undo
 
 " 自动切换工作目录。这主要用在一个 Vim 会话之中打开多个文件的情况，默认的工作目录是打开的第一个文件的目录。
 " 该配置可以将工作目录自动切换到，正在编辑的文件的目录
@@ -209,7 +201,7 @@ inoremap ( ()<Esc>i
 inoremap [ []<Esc>i
 inoremap { {<CR>}<Esc>i<tab><CR><Esc>kA
 inoremap ' ''<Esc>i
-inoremap " ""<Esc>i
+"inoremap " ""<Esc>i
 
 
 " =============================================
@@ -223,19 +215,19 @@ let mapleader=" "
 noremap <LEADER><CR> :nohlsearch<CR>
 
 " 搜索移动后居中
-noremap - Nzz
-noremap = nzz
+noremap N Nzz
+noremap n nzz
 
 " 方向键
-noremap h i
-noremap j h
-noremap i k
-noremap k j
+"noremap h i
+"noremap j h
+"noremap i k
+"noremap k j
 
 " 大幅度移动
-noremap I 5k
-noremap K 5j
-noremap J 7h
+noremap H 5h
+noremap J 7j
+noremap K 5k
 noremap L 7l
 
 " 行首B 行尾E
@@ -243,7 +235,7 @@ noremap B ^
 noremap E $
 
 " 插入模式
-noremap H I
+"noremap H I
 
 " 退出插入模式
 inoremap <C-h> <Esc>
@@ -251,19 +243,12 @@ inoremap jj <Esc>
 " 历史记录前进U 后退u
 noremap U <C-r>
 
-" 折叠展开
-noremap [ zo
-noremap ] zc
-
 " 插入空行不进入插入模式
 nnoremap co o<Esc>
 nnoremap cO O<Esc>
 
-" 失效
-map s <nop>
-
 " 搜索当前单词
-map Y yhw/<C-r>0<CR>
+"map Y *
 
 " 查看寄存器
 noremap "" :reg<CR>
@@ -279,34 +264,48 @@ map Q :q!<CR>
 " 读取配置
 map R :source $MYVIMRC<CR>
 
+" 失效
+map s <nop>
+map t <nop>
+
 " 替换模式
-noremap r R
+"noremap r R
+
+" 折叠展开
+"noremap [ zo
+"noremap ] zc
+
+"切换缓冲区
+nnoremap [b :bprevious<CR>
+nnoremap ]b :bnext<CR>
+nnoremap [B :bfirst<CR>
+nnoremap ]B :blast<CR>
+
+" 标签
+map tn :tabe<CR>
+map te :tabe<CR>:e 
+map [t :-tabnext<CR>
+map ]t :+tabnext<CR>
 
 " 分屏
 map sl :set splitright<CR>:vsplit<CR>
-map sj :set nosplitright<CR>:vsplit<CR>
-map si :set nosplitbelow<CR>:split<CR>
-map sk :set splitbelow<CR>:split<CR>
+map sh :set nosplitright<CR>:vsplit<CR>
+map sk :set nosplitbelow<CR>:split<CR>
+map sj :set splitbelow<CR>:split<CR>
 
 " 分屏切换样式
-map sv <C-w>t<C-w>H
+map sn <C-w>t<C-w>H
 map sh <C-w>t<C-w>K
 
 " 分屏切换编辑
 map <LEADER>l <C-w>l
-map <LEADER>i <C-w>k
-map <LEADER>j <C-w>h
-map <LEADER>k <C-w>j
-
-" 标签
-map ti :tabe<CR>
-map tk :tabe<CR>:e 
-map tj :-tabnext<CR>
-map tl :+tabnext<CR>
+"map <LEADER>k <C-w>k
+map <LEADER>h <C-w>h
+"map <LEADER>j <C-w>j
 
 " 屏幕尺寸
-map <up> :res +5<CR>
-map <down> :res -5<CR>
+"map <up> :res +5<CR>
+"map <down> :res -5<CR>
 map <left> :vertical resize -5<CR>
 map <right> :vertical resize +5<CR>
 
@@ -315,25 +314,25 @@ map <right> :vertical resize +5<CR>
 "               插件设置
 " =============================================
 
-call plug#begin('~/.vim/plugged')
+"call plug#begin('~/.vim/plugged')
 
 " 状态栏
-Plug 'vim-airline/vim-airline'
+"Plug 'vim-airline/vim-airline'
 
 " 文件树
-Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
+"Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 
 " 缩进线
-Plug 'Yggdroot/indentLine'
+"Plug 'Yggdroot/indentLine'
 
 " 简约风
-Plug 'junegunn/goyo.vim'
+"Plug 'junegunn/goyo.vim'
 
 
 " 代码补全
-Plug 'Valloric/YouCompleteMe'
+"Plug 'Valloric/YouCompleteMe'
 
-call plug#end()
+"call plug#end()
 
 
 " =============================================
@@ -341,26 +340,25 @@ call plug#end()
 " =============================================
 
 " NERDTree
-map ff :NERDTreeToggle<CR>
-let NERDTreeShowLineNumber=1
-let NERDTreeShowHidden=1
-let NERDTreeMapOpenExpl = ""
-let NERDTreeMapUpdir = "J"
-let NERDTreeMapUpdirKeepOpen = "j"
-let NERDTreeMapOpenSplit = "s"
-let NERDTreeOpenVSplit = ""
-let NERDTreeMapActivateNode = "o"
-let NERDTreeMapOpenInTab = "t"
-let NERDTreeMapPreview = "T"
-let NERDTreeMapCloseDir = "q"
-let NERDTreeMapChangeRoot = "l"
+"map ff :NERDTreeToggle<CR>
+"let NERDTreeShowLineNumber=1
+"let NERDTreeShowHidden=1
+"let NERDTreeMapOpenExpl = ""
+"let NERDTreeMapUpdir = "J"
+"let NERDTreeMapUpdirKeepOpen = "j"
+"let NERDTreeMapOpenSplit = "s"
+"let NERDTreeOpenVSplit = ""
+"let NERDTreeMapActivateNode = "o"
+"let NERDTreeMapOpenInTab = "t"
+"let NERDTreeMapPreview = "T"
+"let NERDTreeMapCloseDir = "q"
+"let NERDTreeMapChangeRoot = "l"
 
 " You Complete ME
-nnoremap gd :YcmCompleter GoToDefinitionElseDeclaration<CR>
-nnoremap g/ :YcmCompleter GetDoc<CR>
-nnoremap gt :YcmCompleter GetType<CR>
-nnoremap gr :YcmCompleter GoToReferences<CR>
+"nnoremap gd :YcmCompleter GoToDefinitionElseDeclaration<CR>
+"nnoremap g/ :YcmCompleter GetDoc<CR>
+"nnoremap gt :YcmCompleter GetType<CR>
+"nnoremap gr :YcmCompleter GoToReferences<CR>
 
 " Goyo
-map <LEADER>gy :Goyo<CR>
-
+"map <LEADER>gy :Goyo<CR>
