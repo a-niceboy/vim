@@ -21,7 +21,7 @@ set encoding=utf-8
 " 启用256色
 set t_Co=256
 
-" 配色不对
+" 配色不对 兼容某些终端用vim可能会出现问题
 let &t_ut=''
 
 " 使用鼠标
