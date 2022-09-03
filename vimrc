@@ -8,12 +8,23 @@
 "               基础设置
 " =============================================
 
+" 设置跳转文件
+" :autocmd BufWitePost * call system("ctags -R")
+set tags=tags;
+" 自动切换工作目录。这主要用在一个 Vim 会话之中打开多个文件的情况，默认的工作目录是打开的第一个文件的目录。
+" 该配置可以将工作目录自动切换到，正在编辑的文件的目录
+set autochdir
+
 " 打开语法高亮。自动识别代码，使用多种颜色显示
 syntax on
 "syntax enable
 
-" 显示命令" 使用vim键盘模式
+" 使用vim键盘模式 不与vi兼容 大部分插件需求
 set nocompatible
+
+" set backspace? 为空 退格键只能删除本次插入模式输入的内容
+" 0 都不能删除 1 indent,eol 删除缩进 行首合并两行 2 indent,eol,start 插入前内容
+set backspace=2
 
 " 使用 utf-8 编码
 set encoding=utf-8
@@ -21,7 +32,7 @@ set encoding=utf-8
 " 启用256色
 set t_Co=256
 
-" 配色不对 兼容某些终端用vim可能会出现问题
+" 兼容某些终端用vim可能会出现问题 
 let &t_ut=''
 
 " 使用鼠标
@@ -30,34 +41,55 @@ let &t_ut=''
 " 恢复上次编辑位置
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 
+" 命令模式下，底部操作指令按下 Tab 键自动补全。第一次按下 Tab，会显示所有匹配的操作指令的清单；第二次按下 Tab，会依次选择各个指令
+set wildmenu
+set wildmode=longest:list,full
+
+" 文件打开防止高亮
+exec "nohlsearch"
+
 
 " =============================================
 "               缩进设置
 " =============================================
 
-" 按下回车键后，下一行的缩进会自动跟上一行的缩进保持一致
-set autoindent
-set cindent
+" 缩进基础值 在文本上按下>>（增加一级缩进）、<<（取消一级缩进）或者==（取消全部缩进）时，每一级的字符数
+set shiftwidth=4
 
 " 按下 Tab 键时，Vim 显示的空格数
 set tabstop=4
 
-" 在文本上按下>>（增加一级缩进）、<<（取消一级缩进）或者==（取消全部缩进）时，每一级的字符数
-set shiftwidth=4
+" Tab 转为多少个空格
+set softtabstop=4
+
+" 按下回车键后，下一行的缩进会自动跟上一行的缩进保持一致
+" 添加与上一行一致的缩进 取消set no ...
+"set autoindent
+" 在autoindent的基础上根据{、} 来调整本行缩进
+set smartindent
+" 根据类似c java 的代码动态调节缩进 见到if 之类的可以自动缩进
+"set cindent
+" 未找到解释
+"set indentexpr
 
 " 由于 Tab 键在不同的编辑器缩进不一致，该设置自动将 Tab 转为空格
 set expandtab
 
-" Tab 转为多少个空格
-set softtabstop=4
-
 " 不要用空格代替制表符
 set noexpandtab
 
+" 显示缩进 tab ^I 行尾$
+"set list
+
+" 不显示缩进 tab 显示空格
+set nolist
 
 " =============================================
 "               外观设置
 " =============================================
+
+" 颜色主题
+" colorscheme solarized
 
 " 显示行号
 set number
@@ -100,14 +132,13 @@ set cmdheight=1
 " 在状态栏显示光标的当前位置（位于哪一行哪一列）
 " set ruler
 
-" 显示不可见字符
-" set list
-
 " 设置在状态行显示的信息
 set foldcolumn=0
 set foldmethod=indent 
 set foldlevel=0
-set foldenable 
+" 关闭折叠
+set nofoldenable
+"set foldenable 
 
 " 光标设置
 "let &t_SI = "\<Esc>]50;CursorShape=1\x7"
@@ -119,8 +150,11 @@ set foldenable
 "               搜索设置
 " =============================================
 
-" 命令提示
-set wildmenu
+" 搜索成对单引号
+" \v'([^']|'\w)+'
+
+" 查看上次搜索匹配数量
+nnoremap <C-r> :%s///gn<CR>
 
 " 光标遇到圆括号、方括号、大括号时，自动高亮对应的另一个圆括号、方括号和大括号
 set showmatch
@@ -128,10 +162,7 @@ set showmatch
 " 搜索时，高亮显示匹配结果
 set hlsearch
 
-" 文件打开防止高亮
-exec "nohlsearch"
-
-" 输入搜索模式时，每输入一个字符，就自动跳到第一个匹配的结果
+" 预览 输入搜索模式时，每输入一个字符，就自动跳到第一个匹配的结果
 set incsearch
 
 " 搜索忽略大小写
@@ -145,11 +176,6 @@ set smartcase
 " =============================================
 "               编辑设置
 " =============================================
-set encoding=utf-8
-
-" 命令模式下，底部操作指令按下 Tab 键自动补全。第一次按下 Tab，会显示所有匹配的操作指令的清单；第二次按下 Tab，会依次选择各个指令
-set wildmenu
-set wildmode=longest:list,full
 
 " 打开英语单词的拼写检查
 "set spell spelllang=en_us
@@ -177,10 +203,6 @@ set undofile
 "set undodir=~/.vim/.undo//
 set undodir=$VIM\.undo
 
-" 自动切换工作目录。这主要用在一个 Vim 会话之中打开多个文件的情况，默认的工作目录是打开的第一个文件的目录。
-" 该配置可以将工作目录自动切换到，正在编辑的文件的目录
-"set autochdi
-
 " 出错时，不要发出响声
 set noerrorbells
 
@@ -194,13 +216,13 @@ set history=1000
 set autoread
 
 " 如果行尾有多余的空格（包括 Tab 键），该配置将让这些空格显示成可见的小方块
-" set listchars=tab:»■,trail:■
+"set listchars=tab:»■,trail:■
 
 " 自动补全
-inoremap ( ()<Esc>i
-inoremap [ []<Esc>i
-inoremap { {<CR>}<Esc>i<tab><CR><Esc>kA
-inoremap ' ''<Esc>i
+"inoremap ( ()<Esc>i
+"inoremap [ []<Esc>i
+"inoremap { {<CR>}<Esc>i<tab><CR><Esc>kA
+"inoremap ' ''<Esc>i
 "inoremap " ""<Esc>i
 
 
@@ -208,38 +230,45 @@ inoremap ' ''<Esc>i
 "               键位设置
 " =============================================
 
+" 可视模式高亮区域搜索 类似正常模式 *快捷键
+"xnoremap * :<C-u>call
+"<SID>VSetSearch()<CR>/<C-R>=@/<CR><CR>
+"xnoremap # :<C-u>call
+"<SID>VSetSearch()<CR>?<C-R>=@/<CR><CR>
+"function! s:VSetSearch()
+	"let temp = @s
+	"norm! gv"sy
+	"let @/ = '\V' . substitute(escape(@s, '/\'), '\n','\\n', 'g')
+	"let @s = temp
+"endfunction
+
+" 命令行%% 为当前目录路径
+cnoremap <expr> %% getcmdtype() == ':' ? expand('%:h').'/' : '%%'
+
 " leader键为空格
 let mapleader=" "
 
 " 搜索后取消高亮
-noremap <LEADER><CR> :nohlsearch<CR>
+nnoremap <C-l> :nohlsearch<CR><C-l>
 
 " 搜索移动后居中
 noremap N Nzz
 noremap n nzz
 
-" 方向键
-"noremap h i
-"noremap j h
-"noremap i k
-"noremap k j
+" J改大幅度移动 J功能映射H键
+noremap H J
 
 " 大幅度移动
-noremap H 5h
-noremap J 7j
+noremap J 5j
 noremap K 5k
-noremap L 7l
 
 " 行首B 行尾E
 noremap B ^
 noremap E $
 
-" 插入模式
-"noremap H I
-
 " 退出插入模式
-inoremap <C-h> <Esc>
 inoremap jj <Esc>
+
 " 历史记录前进U 后退u
 noremap U <C-r>
 
@@ -247,13 +276,16 @@ noremap U <C-r>
 nnoremap co o<Esc>
 nnoremap cO O<Esc>
 
-" 搜索当前单词
-"map Y *
-
 " 查看寄存器
 noremap "" :reg<CR>
 
+" M原为光标到屏幕中间 改为删除标记
 noremap M :delmarks 
+
+" &命令 重复替换并保留上次所有参数
+nnoremap & :&&<CR>
+xnoremap & :&&<CR>
+
 " 保存
 map S :w!<CR>
 map W :w!<CR>
@@ -281,26 +313,27 @@ nnoremap ]b :bnext<CR>
 nnoremap [B :bfirst<CR>
 nnoremap ]B :blast<CR>
 
-" 标签
+" 标签 n gt
 map tn :tabe<CR>
 map te :tabe<CR>:e 
-map [t :-tabnext<CR>
-map ]t :+tabnext<CR>
+map tm :tabmove 
+map th :gT 
+map tl :gt 
 
 " 分屏
-map sl :set splitright<CR>:vsplit<CR>
 map sh :set nosplitright<CR>:vsplit<CR>
-map sk :set nosplitbelow<CR>:split<CR>
-map sj :set splitbelow<CR>:split<CR>
+map sl :set splitright<CR>:vsplit<CR>
+"map sk :set nosplitbelow<CR>:split<CR>
+"map sj :set splitbelow<CR>:split<CR>
 
-" 分屏切换样式
-map sn <C-w>t<C-w>H
-map sh <C-w>t<C-w>K
+" 分屏切换样式 左右 上下
+"map s[ <C-w>t<C-w>H
+"map s] <C-w>t<C-w>K
 
 " 分屏切换编辑
+map <LEADER>h <C-w>h
 map <LEADER>l <C-w>l
 "map <LEADER>k <C-w>k
-map <LEADER>h <C-w>h
 "map <LEADER>j <C-w>j
 
 " 屏幕尺寸
@@ -327,7 +360,6 @@ map <right> :vertical resize +5<CR>
 
 " 简约风
 "Plug 'junegunn/goyo.vim'
-
 
 " 代码补全
 "Plug 'Valloric/YouCompleteMe'
