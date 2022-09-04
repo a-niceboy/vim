@@ -274,8 +274,7 @@ set guioptions-=T
 set nolist
 
 " 在被分割的窗口间显示空白 默认|
-set fillchars=vert:\ ,stl:\ ,stlnc:\ 
-
+set fillchars=vert:\ ,stl:\ ,stlnc:\ ,eob:\ 
 " =============================================
 "               键位设置
 " =============================================
@@ -448,7 +447,7 @@ Plug 'Yggdroot/LeaderF', { 'do': ':LeaderfInstallCExtension' }
 set pythonthreedll=C:Users\admin\AppData\Local\Programs\Python\Python310\python310.dll
 
 " 缩进线
-"Plug 'Yggdroot/indentLine'
+Plug 'Yggdroot/indentLine'
 
 " 简约风
 "Plug 'junegunn/goyo.vim'
@@ -477,6 +476,9 @@ map <C-n> :NERDTreeToggle<CR>
 " Goyo
 "map <LEADER>gy :Goyo<CR>
 "
+" LeaderF
+let g:Lf_WildIgnore={'file':['*.meta', '*.git'],'dir':[]}
+
 " =============================================
 "               笔记
 " =============================================
