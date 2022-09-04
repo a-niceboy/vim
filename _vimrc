@@ -8,6 +8,14 @@
 " =============================================
 "               基础设置
 " =============================================
+" 去掉开界面时显示内容
+autocmd GUIEnter * set shortmess=atI
+
+" 启动vim 全屏
+"autocmd GUIEnter * simalt ~x
+if has('gui_running') && has('libcall')
+	autocmd GUIEnter * call libcallnr("gvimfullscreen", "ToggleFullScreen", 0)
+endif
 
 " 使用vim键盘模式 不与vi兼容 大部分插件需求
 set nocompatible
@@ -33,7 +41,7 @@ exec "nohlsearch"
 
 " 自动切换工作目录。这主要用在一个 Vim 会话之中打开多个文件的情况，默认的工作目录是打开的第一个文件的目录。
 " 该配置可以将工作目录自动切换到，正在编辑的文件的目录
-set autochdir
+"set autochdir
 
 " 关闭折叠
 set nofoldenable
@@ -141,7 +149,7 @@ syntax on
 set t_Co=256
 
 " 颜色主题
-colorscheme slate
+colorscheme molokai
 
 " 显示行号
 set number
@@ -239,7 +247,7 @@ set cmdheight=1
 " 在状态栏显示光标的当前位置（位于哪一行哪一列）
 " set ruler
 
-" 未找到解释
+" 折叠相关配置
 set foldcolumn=0
 set foldmethod=indent 
 set foldlevel=0
@@ -271,6 +279,45 @@ set fillchars=vert:\ ,stl:\ ,stlnc:\
 " =============================================
 "               键位设置
 " =============================================
+if has('gui_running') && has('libcall')
+	let g:MyVimLib = $VIMRUNTIME.'/gvimfullscreen.dll'
+	function ToggleFullScreen()
+		call libcallnr(g:MyVimLib, "ToggleFullScreen", 0)
+	endfunction
+    
+	"Alt+Enter
+	map <A-Enter> <Esc>:call ToggleFullScreen()<CR>
+
+	let g:VimAlpha = 240
+	function! SetAlpha(alpha)
+		let g:VimAlpha = g:VimAlpha + a:alpha
+		if g:VimAlpha < 180
+			let g:VimAlpha = 180
+		endif
+		if g:VimAlpha > 255
+			let g:VimAlpha = 255
+		endif
+		call libcall(g:MyVimLib, 'SetAlpha', g:VimAlpha)
+	endfunction
+    
+	"Shift+Y
+	nmap <s-y> <Esc>:call SetAlpha(3)<CR>
+	"Shift+T
+	nmap <s-t> <Esc>:call SetAlpha(-3)<CR>
+
+"	let g:VimTopMost = 0
+"	function! SwitchVimTopMostMode()
+"		if g:VimTopMost == 0
+"			let g:VimTopMost = 1
+"		else
+"			let g:VimTopMost = 0
+"		endif
+"		call libcall(g:MyVimLib, 'EnableTopMost', g:VimTopMost)
+"	endfunction
+"    
+"	"Shift+R
+"	nmap <s-r> <Esc>:call SwitchVimTopMostMode()<CR>
+endif
 
 " 命令行%% 为当前目录路径
 cnoremap <expr> %% getcmdtype() == ':' ? expand('%:h').'/' : '%%'
@@ -398,7 +445,7 @@ Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 " 搜索文件 需要安装py3
 Plug 'Yggdroot/LeaderF', { 'do': ':LeaderfInstallCExtension' }
 " 找到py3动态库赋值
-set pythonthreedll=C:Users\Administrator\AppData\Local\Programs\Python\Python310\python310.dll
+set pythonthreedll=C:Users\admin\AppData\Local\Programs\Python\Python310\python310.dll
 
 " 缩进线
 "Plug 'Yggdroot/indentLine'
