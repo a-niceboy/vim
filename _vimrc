@@ -8,11 +8,16 @@
 " =============================================
 "               基础设置
 " =============================================
+
+" 工作区
+"autocmd GUIEnter * :cd E:\clientDev\Assets\Resources\ClientProgram\Lua
+
 " 去掉开界面时显示内容
 autocmd GUIEnter * set shortmess=atI
 
 " 启动vim 全屏
 "autocmd GUIEnter * simalt ~x
+" 启动gvimfunnscreen 全屏
 if has('gui_running') && has('libcall')
 	autocmd GUIEnter * call libcallnr("gvimfullscreen", "ToggleFullScreen", 0)
 endif
@@ -141,6 +146,11 @@ set noexpandtab
 " =============================================
 "               表现设置
 " =============================================
+
+" 字体设置
+set guifont=Bitstream_Vera_Sans_Mono:h10:cANSI
+set gfw=幼圆:h10.5:cGB2312
+
 " 打开语法高亮。自动识别代码，使用多种颜色显示
 syntax on
 "syntax enable
@@ -369,6 +379,9 @@ noremap W :w!<CR>
 " 退出
 noremap Q :q!<CR>
 
+" 关闭当前缓冲区文件
+nnoremap <C-q> :bdelete<CR>
+
 " 读取配置
 noremap <LEADER>r :source $MYVIMRC<CR>
 
@@ -443,11 +456,12 @@ Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 
 " 搜索文件 需要安装py3
 Plug 'Yggdroot/LeaderF', { 'do': ':LeaderfInstallCExtension' }
-" 找到py3动态库赋值
-set pythonthreedll=C:Users\admin\AppData\Local\Programs\Python\Python310\python310.dll
 
 " 缩进线
 Plug 'Yggdroot/indentLine'
+
+" 代码补全
+"Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 " 简约风
 "Plug 'junegunn/goyo.vim'
@@ -476,8 +490,15 @@ map <C-n> :NERDTreeToggle<CR>
 " Goyo
 "map <LEADER>gy :Goyo<CR>
 "
-" LeaderF
+" LeaderF 屏蔽文件类型
 let g:Lf_WildIgnore={'file':['*.meta', '*.git'],'dir':[]}
+" 找到py3动态库赋值
+"set pythonthreedll=C:Users\admin\AppData\Local\Programs\Python\Python310\python310.dll
+" 是否考虑多加一个按键？ m->fm
+nnoremap <silent> <LEADER>m :LeaderfMru<CR>
+nnoremap <silent> <LEADER>F :LeaderfFunctionAll<CR>
+nnoremap <silent> <LEADER>g :LeaderfRgInteractive<CR>
+nnoremap <silent> <LEADER>G :LeaderfRgRecall<CR>
 
 " =============================================
 "               笔记
